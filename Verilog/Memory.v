@@ -11,7 +11,7 @@ module crom_1024x36
       .address(address),
       .douta(q)
       );
-endmodule // crom_1024x23
+endmodule // crom_1024x36
 
 module Memory
   (

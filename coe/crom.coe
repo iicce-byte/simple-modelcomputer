@@ -1,0 +1,8 @@
+; CROM (Control ROM) Initialization File
+; 微程序控制存储器初始化文件
+; 生成自微程序.xlsx
+;
+; Memory Size: 1024 words
+; Data Width: 36 bits (6 hex digits)
+memory_initialization_radix=16;
+memory_initialization_vector=
