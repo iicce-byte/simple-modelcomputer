@@ -220,4 +220,61 @@ module upc
       end
    end
 
-endmodule
+endmodule // upc
+
+module ic_74161
+  (
+   // 时钟和控制信号
+    input wire       clk,  // 时钟输入（上升沿有效）
+    input wire       CR,   // 异步清零（低电平有效）
+    input wire       LD,   // 并行加载使能（高电平有效）
+    input wire       CT_p, // 使能输入P（高电平有效）
+    input wire       CT_t, // 使能输入T（高电平有效）
+
+   // 数据输入/输出
+    input wire [3:0] d, // 4位并行数据输入 D0-D3
+    output reg [3:0] q, // 4位计数输出 Q0-Q3
+
+   // 状态输出
+    output wire CO // 纹波进位输出（Ripple Carry Output）
+   );
+
+   // 内部信号
+   wire count_enable;
+   
+   // 计数使能逻辑：CT_p和CT_t都为高时才能计数
+   assign count_enable = CT_p & CT_t;
+   
+   // 纹波进位输出：当计数器为1111且使能有效时输出高电平
+   assign CO = (q == 4'b1111) & CT_t;
+   
+   // 主计数逻辑
+   always @(posedge clk or negedge CR) begin
+      if (!CR) begin
+         // 异步清零（优先级最高）
+         q <= 4'b0000;
+      end
+      else if (LD) begin
+         // 同步并行加载（第二优先级）
+         q <= d;
+      end
+      else if (count_enable) begin
+         // 同步计数（当CT_p和CT_t都为高时）
+         q <= q + 1'b1;
+      end
+      // 如果不满足以上条件，保持当前值
+   end
+   
+endmodule // ic_74161
+
+module tri_state_buffer_8bit (
+    input  wire [7:0] data_in,    // 8位数据输入
+    input  wire       enable,     // 控制信号（高电平有效）
+    output wire [7:0] data_out    // 8位三态输出
+);
+
+    // 当 enable 为高电平时 (1)：输出等于 8 位输入
+    // 当 enable 为低电平时 (0)：输出为高阻态 (8'bz)
+    assign data_out = enable ? data_in : 8'bz;
+
+endmodule // tri_state_buffer_8bit

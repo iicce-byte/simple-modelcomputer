@@ -76,4 +76,21 @@ module Bus_Splitter_10to10x1
    assign ad7 = addr_next[7];
    assign ad8 = addr_next[8];
    assign ad9 = addr_next[9];
-endmodule
+endmodule // Bus_Splitter_10to10x1
+
+module Data_Hub_8to4x2
+  (
+   input wire [7:0]  Data_8bit_in,
+   output wire [7:0] Data_8bit_out,
+
+   output wire [3:0] Data_High_4out,
+   output wire [3:0] Data_Low_4out,
+
+   input wire [3:0] Data_High_4in,
+   input wire [3:0] Data_Low_4in
+   );
+   assign Data_High_4out = Data_8bit_in[7:4];
+   assign Data_Low_4out = Data_8bit_in[3:0];
+
+   assign Data_8bit_out = {Data_High_4in, Data_Low_4in};
+endmodule // Data_Hub_8to4x2
