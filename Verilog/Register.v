@@ -267,14 +267,15 @@ module ic_74161
    
 endmodule // ic_74161
 
-module tri_state_buffer_8bit (
-    input  wire [7:0] data_in,    // 8位数据输入
-    input  wire       enable,     // 控制信号（高电平有效）
-    output wire [7:0] data_out    // 8位三态输出
-);
+module tri_state_buffer_8bit
+  (
+    input wire [7:0]  data_in, // 8位数据输入
+    input wire        enable,  // 控制信号（高电平有效）
+    output wire [7:0] data_out // 8位三态输出
+   );
 
-    // 当 enable 为高电平时 (1)：输出等于 8 位输入
-    // 当 enable 为低电平时 (0)：输出为高阻态 (8'bz)
-    assign data_out = enable ? data_in : 8'bz;
+   // 当 enable 为高电平时 (1)：输出等于 8 位输入
+   // 当 enable 为低电平时 (0)：输出为高阻态 (8'bz)
+   assign data_out = enable ? data_in : 8'bz;
 
 endmodule // tri_state_buffer_8bit
